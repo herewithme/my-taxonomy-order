@@ -72,7 +72,7 @@ function mytaxonomyorder_init() {
 		$taxStr = '';
 		foreach( $taxonomies as $tax ){
 			$taxStr .= '<option '.selected( $tax->name, $taxonomy, false ).' value="'.$tax->name.'" >';
-			$taxStr .= $tax->label; 
+			$taxStr .= $tax->labels->singular_name.' ('.$tax->name.')'; 
 			$taxStr .= '</option>'; 
 		}
 		
@@ -114,7 +114,7 @@ function mytaxonomyorder_init() {
 		<?php 
 		if($parentID != 0){
 			$parentsParent = $wpdb->get_row("SELECT parent FROM $wpdb->term_taxonomy WHERE term_id = $parentID ", ARRAY_N);
-			echo "<a href='". mytaxonomyorder_getTarget() . "?page=mytaxonomyorder&parentID=$parentsParent[0]'>".__('Return to parent category','mytaxonomyorder')."</a>";
+			echo '<a href="'. mytaxonomyorder_getTarget() . '?page=mytaxonomyorder&parentID='.$parentsParent[0].'&taxonomy='.$taxonomy.'">'.__('Return to parent category','mytaxonomyorder').'</a>';
 		}
 		?>
 		<h3><?php _e('Select taxonomy','mytaxonomyorder'); ?></h3>

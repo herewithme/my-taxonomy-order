@@ -97,7 +97,7 @@ function mytaxonomyorder_init() {
 	
 		$subCatStr = "";
 	
-		$results=$wpdb->get_results("SELECT t.term_id, t.name FROM $wpdb->term_taxonomy tt, $wpdb->terms t, $wpdb->term_taxonomy tt2 WHERE tt.parent = $parentID AND tt.taxonomy = 'category' AND t.term_id = tt.term_id AND tt2.parent = tt.term_id GROUP BY t.term_id, t.name HAVING COUNT(*) > 0 ORDER BY t.term_order ASC");
+		$results=$wpdb->get_results("SELECT t.term_id, t.name FROM $wpdb->term_taxonomy tt, $wpdb->terms t, $wpdb->term_taxonomy tt2 WHERE tt.parent = $parentID AND tt.taxonomy = '".$taxonomy."' AND t.term_id = tt.term_id AND tt2.parent = tt.term_id GROUP BY t.term_id, t.name HAVING COUNT(*) > 0 ORDER BY tt.term_order ASC");
 		
 		foreach($results as $row){
 			$subCatStr = $subCatStr."<option value='$row->term_id'>$row->name</option>";
@@ -111,7 +111,7 @@ function mytaxonomyorder_init() {
 	
 		<p><?php _e('Choose a category from the drop down to order subcategories in that category or order the categories on this level by dragging and dropping them into the desired order.','mytaxonomyorder'); ?></p>
 	
-	<?php 
+		<?php 
 		if($parentID != 0){
 			$parentsParent = $wpdb->get_row("SELECT parent FROM $wpdb->term_taxonomy WHERE term_id = $parentID ", ARRAY_N);
 			echo "<a href='". mytaxonomyorder_getTarget() . "?page=mytaxonomyorder&parentID=$parentsParent[0]'>".__('Return to parent category','mytaxonomyorder')."</a>";
@@ -131,7 +131,7 @@ function mytaxonomyorder_init() {
 		</select>
 		&nbsp;<input type="button" name="edit" Value="<?php _e('Order Subcategories','mytaxonomyorder'); ?>" onClick="javascript:goEdit();">
 	<?php }
-		$results=$wpdb->get_results("SELECT * FROM $wpdb->term_taxonomy t inner join $wpdb->term_taxonomy tt on t.term_id = tt.term_id WHERE taxonomy = 'category' and parent = $parentID ORDER BY term_order ASC"); ?>
+		$results=$wpdb->get_results("SELECT * FROM $wpdb->terms t inner join $wpdb->term_taxonomy tt on t.term_id = tt.term_id WHERE taxonomy = '".$taxonomy."' and parent = $parentID ORDER BY tt.term_order ASC"); ?>
 		<h3><?php _e('Order Categories','mytaxonomyorder'); ?></h3>
 		    <ul id="order" style="width: 90%; margin:10px 10px 10px 0px; padding:10px; border:1px solid #B2B2B2; list-style:none;">
 			<?php foreach($results as $row)
@@ -171,7 +171,11 @@ function mytaxonomyorder_init() {
 			jQuery("#updateText").html("<?php _e('Updating Category Order...','mytaxonomyorder'); ?>");
 			
 			idList = jQuery("#order").sortable("toArray");
-			location.href = '<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&mode=act_OrderCategories&parentID=<?php echo $parentID; ?>&idString='+idList;
+			var taxo = '';
+			if( jQuery('#taxonomy').val() != "" ){
+				taxo = "&taxonomy=<?php echo $taxonomy; ?>";
+			}
+			location.href = '<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&mode=act_OrderCategories&parentID=<?php echo $parentID; ?>&idString='+idList+taxo;
 		}
 		function goEdit (){
 			var cats = '';

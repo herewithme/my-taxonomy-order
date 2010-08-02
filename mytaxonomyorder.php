@@ -192,36 +192,42 @@ function mytaxonomyorder_init() {
 	}
 }
 	
-function mytaxonomyorder_applyorderfilter($orderby, $args)
-{
-	if($args['orderby'] == 'order')
-		return 't.term_order';
+function mytaxonomyorder_applyorderfilter( $orderby, $args ){
+	if( $args['orderby'] == 'order' )
+		return 'tt.term_order';
 	else
 		return $orderby;
 }
 
-add_filter('get_terms_orderby', 'mytaxonomyorder_applyorderfilter', 10, 2);
+add_filter( 'get_terms_orderby', 'mytaxonomyorder_applyorderfilter', 10, 2 );
 
-add_action('plugins_loaded', 'mytaxonomyorder_init');
+add_action( 'plugins_loaded', 'mytaxonomyorder_init' );
 
 /* Load Translations */
-add_action('init', 'mytaxonomyorder_loadtranslation');
+add_action( 'init', 'mytaxonomyorder_loadtranslation' );
 
 function mytaxonomyorder_loadtranslation() {
 	//load_plugin_textdomain('mytaxonomyorder', false, PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)) );
 }
 
+add_action( 'widgets_init', 'mytaxonomyorder_widgets_init' );
+
+function mytaxonomyorder_widgets_init() {
+	register_widget('mytaxonomyorder_Widget');
+}
 
 class mytaxonomyorder_Widget extends WP_Widget {
 
 	function mytaxonomyorder_Widget() {
-		$widget_ops = array('classname' => 'widget_mytaxonomyorder', 'description' => __( 'Enhanced Category widget provided by My Category Order') );
-		$this->WP_Widget('mytaxonomyorder', __('My Category Order'), $widget_ops);	}
+		$widget_ops = array('classname' => 'widget_mytaxonomyorder', 'description' => __( 'Enhanced Taxonomy widget provided by My Taxonomy Order') );
+		$this->WP_Widget('mytaxonomyorder', __('My Taxonomy Order'), $widget_ops);	}
 
 	function widget( $args, $instance ) {
 		extract( $args );
-
-		$title_li = apply_filters('widget_title', empty( $instance['title_li'] ) ? __( 'Categories' ) : $instance['title_li']);
+		
+		
+		$title_li = apply_filters('widget_title', empty( $instance['title_li'] ) ? __( 'Taxonomies','mytaxonomyorder' ) : $instance['title_li']);
+		$taxonomy = empty( $instance['taxonomy'] ) ? 'category' : $instance['taxonomy'];
 		$orderby = empty( $instance['orderby'] ) ? 'order' : $instance['orderby'];
 		$order = empty( $instance['order'] ) ? 'asc' : $instance['order'];
 		$show_dropdown = (bool) $instance['show_dropdown'];
@@ -238,7 +244,7 @@ class mytaxonomyorder_Widget extends WP_Widget {
 		$hierarchical = empty( $instance['hierarchical'] ) ? '1' : $instance['hierarchical'];
 		$number = empty( $instance['number'] ) ? '' : $instance['number'];
 		$depth = empty( $instance['depth'] ) ? '0' : $instance['depth'];
-
+		
 		echo $before_widget;
 		if ( $title_li )
 			echo $before_title . $title_li . $after_title;
@@ -246,22 +252,30 @@ class mytaxonomyorder_Widget extends WP_Widget {
 		$cat_args = array('orderby' => $orderby, 'order' => $order, 'show_last_updated' => $show_last_updated, 'show_count' => $show_count, 
 			'hide_empty' => $hide_empty, 'use_desc_for_title' => $use_desc_for_title, 'child_of' => $child_of, 'feed' => $feed, 
 			'feed_image' => $feed_image, 'exclude' => $exclude, 'exclude_tree' => $exclude_tree, 'include' => $include,
-			'hierarchical' => $hierarchical, 'number' => $number, 'depth' => $depth);
-
+			'hierarchical' => $hierarchical, 'number' => $number, 'depth' => $depth, 'taxonomy' => $taxonomy, 'name' => $taxonomy, 'id' => 'taxonomy' );
+		
 		if ( $show_dropdown ) {
-			$cat_args['show_option_none'] = __('Select Category');
+			$cat_args['show_option_none'] = __('Select Term','mytaxonomyorder');
 			wp_dropdown_categories(apply_filters('widget_categories_dropdown_args', $cat_args));
 		?>
 
 		<script type='text/javascript'>
 		/* <![CDATA[ */
-			var dropdown = document.getElementById("cat");
-			function onCatChange() {
-				if ( dropdown.options[dropdown.selectedIndex].value > 0 ) {
-					location.href = "<?php echo get_option('home'); ?>/?cat="+dropdown.options[dropdown.selectedIndex].value;
-				}
+			var dropdown = document.getElementById("taxonomy");
+			
+			String.prototype.trim = function(){
+			  return this.replace(/^\s+/,'').replace(/\s+$/,'');
 			}
-			dropdown.onchange = onCatChange;
+			
+			function onTaxChange() {
+				if ( dropdown.options[dropdown.selectedIndex].value > 0 && dropdown.name == 'category' )
+					location.href = "<?php echo get_option('home'); ?>/?cat="+dropdown.options[dropdown.selectedIndex].value;
+				else{
+					term = dropdown.options[dropdown.selectedIndex].text;
+					location.href = "<?php echo get_option('home'); ?>/?"+dropdown.name+"="+term.trim();
+				}				
+			}
+			dropdown.onchange = onTaxChange;
 		/* ]]> */
 		</script>
 
@@ -283,7 +297,7 @@ class mytaxonomyorder_Widget extends WP_Widget {
 	function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 
-		if ( in_array( $new_instance['orderby'], array( 'order', 'name', 'count', 'ID', 'slug', 'term_group' ) ) ) {
+		if ( in_array( $new_instance['orderby'], array( 'order', 'name', 'count', 'ID', 'slug', 'term_group', 'taxonomy' ) ) ) {
 			$instance['orderby'] = $new_instance['orderby'];
 		} else {
 			$instance['orderby'] = 'order';
@@ -295,6 +309,7 @@ class mytaxonomyorder_Widget extends WP_Widget {
 			$instance['order'] = 'asc';
 		}
 		
+		$instance['taxonomy'] = $new_instance['taxonomy'];
 		$instance['title_li'] = strip_tags( $new_instance['title_li'] );	
 		$instance['show_dropdown'] = strip_tags( $new_instance['show_dropdown'] );
 		$instance['show_last_updated'] = strip_tags( $new_instance['show_last_updated'] );
@@ -318,6 +333,7 @@ class mytaxonomyorder_Widget extends WP_Widget {
 		//Defaults
 		$instance = wp_parse_args( (array) $instance, array( 'orderby' => 'order', 'order' => 'asc', 'title_li' => '', 'show_dropdown' => '', 'show_last_updated' => '', 'show_count' => '', 'hide_empty' => '1', 'use_desc_for_title' => '1', 'child_of' => '', 'feed' => '', 'feed_image' => '', 'exclude' => '', 'exclude_tree' => '', 'include' => '', 'hierarchical' => '1', 'number' => '', 'depth' => '' ) );
 		
+		$taxonomy = esc_attr( $instance['taxonomy'] );
 		$orderby = esc_attr( $instance['orderby'] );
 		$order = esc_attr( $instance['order'] );
 		$title_li = esc_attr( $instance['title_li'] );
@@ -338,8 +354,22 @@ class mytaxonomyorder_Widget extends WP_Widget {
 		
 		$number = esc_attr( $instance['number'] );
 		$depth  = esc_attr( $instance['depth'] );
+		
+		$taxonomies = get_taxonomies('','objects');
 
 	?>	
+		<p>
+			<label for="<?php echo $this->get_field_id('taxonomy'); ?>"><?php _e( 'Taxonomy:', 'mytaxonomyorder' ); ?></label>
+			<select name="<?php echo $this->get_field_name('taxonomy'); ?>" id="<?php echo $this->get_field_id('taxonomy'); ?>" class="widefat">
+				<?php
+					foreach( $taxonomies as $tax ){
+						echo '<option '.selected( $tax->name, $instance['taxonomy'], false ).' value="'.$tax->name.'" >';
+						echo $tax->labels->singular_name.' ('.$tax->name.')'; 
+						echo '</option>'; 
+					}				
+				 ?>
+			</select>
+		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('orderby'); ?>"><?php _e( 'Order By:', 'mytaxonomyorder' ); ?></label>
 			<select name="<?php echo $this->get_field_name('orderby'); ?>" id="<?php echo $this->get_field_id('orderby'); ?>" class="widefat">
@@ -420,11 +450,4 @@ class mytaxonomyorder_Widget extends WP_Widget {
 <?php
 	}
 }
-
-function mytaxonomyorder_widgets_init() {
-	register_widget('mytaxonomyorder_Widget');
-}
-
-add_action('widgets_init', 'mytaxonomyorder_widgets_init');
-
 ?>

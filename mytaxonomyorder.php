@@ -14,15 +14,86 @@ Original work from My category Order! by Andrew Charlton | http://www.geekyweekl
 add_filter( 'plugin_row_meta', 'mytaxonomyorder_set_plugin_meta', 10, 2 );
 add_action('admin_menu', 'mytaxonomyorder_menu');
 add_action('admin_menu', 'mytaxonomyorder_js_libs');
+add_filter( 'get_terms_orderby', 'mytaxonomyorder_applyorderfilter', 10, 2 );
+add_action( 'plugins_loaded', 'mytaxonomyorder_init' );
+add_action( 'init', 'mytaxonomyorder_loadtranslation' );
+add_action( 'widgets_init', 'mytaxonomyorder_widgets_init' );
+add_action( 'init', 'disable_mycategoryorder' );
 
+/**
+ * Disable all hooks of mycategoryorder for compatibility reasons
+ *
+ * @return void
+ * @author Nicolas Juen
+ */	
+function disable_mycategoryorder(){
+	remove_filter('plugin_row_meta','mycategoryorder_set_plugin_meta');
+	remove_action('admin_menu','mycategoryorder_menu');
+	remove_action('admin_menu','mycategoryorder_js_libs');
+	remove_filter('get_terms_orderby', 'mycategoryorder_applyorderfilter');
+	remove_action('plugins_loaded', 'mycategoryorder_init');
+	remove_action('init', 'mycategoryorder_loadtranslation');
+	remove_action('widgets_init', 'mycategoryorder_widgets_init');
+}
+/**
+ * Register the widget for admin
+ *
+ * @return void
+ * @author Nicolas Juen
+ */	
+function mytaxonomyorder_widgets_init() {
+	register_widget('mytaxonomyorder_Widget');
+}
+
+/**
+ * Load translations of the plugin
+ *
+ * @return void
+ * @author Nicolas Juen
+ */
+function mytaxonomyorder_loadtranslation() {
+	//load_plugin_textdomain('mytaxonomyorder', false, PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)) );
+}
+
+/**
+ * Add custom order to the filter
+ *
+ * @return void
+ * @author Nicolas Juen
+ */
+function mytaxonomyorder_applyorderfilter( $orderby, $args ){
+	if( $args['orderby'] == 'order' )
+		return 'tt.term_order';
+	else
+		return $orderby;
+}
+
+/**
+ * Init of the plugin
+ *
+ * @return void
+ * @author Nicolas Juen
+ */
 function mytaxonomyorder_init() {
-
+	
+	/**
+	 * Add to the tools menu the page for ordering items
+	 *
+	 * @return void
+	 * @author Nicolas Juen
+	 */
 	function mytaxonomyorder_menu()
 	{   
 		if (function_exists('add_management_page'))
 			add_management_page(__('My Taxonomy Order','mytaxonomyorder'), __('My Taxonomy Order','mytaxonomyorder'), 'manage_options','mytaxonomyorder','mytaxonomyorder');
 	}
 	
+	/**
+	 * Add javascript to the admin for re-ordering
+	 *
+	 * @return void
+	 * @author Nicolas Juen
+	 */
 	function mytaxonomyorder_js_libs() {
 		$page = isset( $_GET['page'] )? $_GET['page'] : '' ;
 		if ( $page == "mytaxonomyorder" )
@@ -33,22 +104,39 @@ function mytaxonomyorder_init() {
 		}
 	}
 	
-	//Switch page target depending on version
+	/**
+	 * Return the name file for editing the order of items
+	 *
+	 * @return string
+	 * @author Nicolas Juen
+	 */
 	function mytaxonomyorder_getTarget() {
 		return "edit.php";
 	}
 	
+	/**
+	 * Add links to the plugin row
+	 *
+	 * @return string
+	 * @author Nicolas Juen
+	 */
 	function mytaxonomyorder_set_plugin_meta($links, $file) {
 		$plugin = plugin_basename(__FILE__);
 		// create link
 		if ($file == $plugin) {
 			return array_merge( $links, array( 
-				'<a href="edit.php?page=mytaxonomyorder">' . __('Order Taxonomy') . '</a>',
+				'<a href="'.mytaxonomyorder_getTarget().'?page=mytaxonomyorder">' . __('Order Taxonomy') . '</a>',
 			));
 		}
 		return $links;
 	}
 	
+	/**
+	 * Generate the content of the option plugin page
+	 *
+	 * @return void
+	 * @author Nicolas Juen
+	 */
 	function mytaxonomyorder() {
 		global $wpdb;
 		
@@ -56,10 +144,11 @@ function mytaxonomyorder_init() {
 		$mode = isset( $_GET['mode'] ) ? $_GET['mode'] : '' ;
 		$parentID = 0;
 		$success = "";
+		//Set parent if needed
 		if (isset($_GET['parentID']))
 		    $parentID = $_GET['parentID'];
 		
-			
+		//Display Query errors
 		$wpdb->show_errors();
 		
 		//Get all taxonomies
@@ -73,7 +162,7 @@ function mytaxonomyorder_init() {
 		foreach( $taxonomies as $tax ){
 			$taxStr .= '<option '.selected( $tax->name, $taxonomy, false ).' value="'.$tax->name.'" >';
 			$taxStr .= $tax->labels->singular_name.' ('.$tax->name.')'; 
-			$taxStr .= '</option>'; 
+			$taxStr .= '</option>'.'\n'; 
 		}
 		
 		//Test if the term already exists or not
@@ -83,61 +172,64 @@ function mytaxonomyorder_init() {
 		if ($query1 == 0) {
 			$wpdb->query("ALTER TABLE $wpdb->term_taxonomy ADD `term_order` INT( 4 ) NULL DEFAULT '0'");
 		}
-	
-		if($mode == "act_OrderCategories"){  
+		
+		//Case of ordering children and parent
+		if($mode == "act_OrderTaxonomies"){  
 			$idString = $_GET['idString'];
-			$catIDs = explode(",", $idString);
-			$result = count($catIDs);
-			for($i = 0; $i < $result; $i++)
-			{	
+			$taxIDs = explode(",", $idString);
+			$result = count($taxIDs);
+			for($i = 0; $i < $result; $i++){	
 				$wpdb->query("UPDATE $wpdb->term_taxonomy SET term_order = '$i' WHERE term_id ='$catIDs[$i]'");
 			}
 			$success = '<div id="message" class="updated fade"><p>'. __('Taxonomy updated successfully.', 'mytaxonomyorder').'</p></div>';
 		}
-	
-		$subCatStr = "";
-	
+		
+		//Get terms for current taxonomy
 		$results=$wpdb->get_results("SELECT t.term_id, t.name FROM $wpdb->term_taxonomy tt, $wpdb->terms t, $wpdb->term_taxonomy tt2 WHERE tt.parent = $parentID AND tt.taxonomy = '".$taxonomy."' AND t.term_id = tt.term_id AND tt2.parent = tt.term_id GROUP BY t.term_id, t.name HAVING COUNT(*) > 0 ORDER BY tt.term_order ASC");
 		
+		//Create the option string of subtaxonomies
+		$subTaxStr = "";
 		foreach($results as $row){
-			$subCatStr = $subCatStr."<option value='$row->term_id'>$row->name</option>";
+			$subTaxStr = $subTaxStr."<option value='$row->term_id'>$row->name</option>"."\n";
 		}
 	?>
 		<div class='wrap'>
 			<h2><?php _e('My Taxonomy Order','mytaxonomyorder'); ?></h2>
-		<?php 
-		
-		echo $success; ?>
-	
-		<p><?php _e('Choose a category from the drop down to order subcategories in that category or order the categories on this level by dragging and dropping them into the desired order.','mytaxonomyorder'); ?></p>
+		<?php echo $success ; ?>	
+		<p><?php _e('Choose a taxonomy from the drop down to order subtaxonomies in that taxonomy or order the taxonomies on this level by dragging and dropping them into the desired order.','mytaxonomyorder'); ?></p>
 	
 		<?php 
+		//If parent
 		if($parentID != 0){
+			//Get all children terms of parentId
 			$parentsParent = $wpdb->get_row("SELECT parent FROM $wpdb->term_taxonomy WHERE term_id = $parentID ", ARRAY_N);
+			
+			//Display the link to parent page
 			echo '<a href="'. mytaxonomyorder_getTarget() . '?page=mytaxonomyorder&parentID='.$parentsParent[0].'&taxonomy='.$taxonomy.'">'.__('Return to parent category','mytaxonomyorder').'</a>';
 		}
 		?>
+		
 		<h3><?php _e('Select taxonomy','mytaxonomyorder'); ?></h3>
 		<select id="taxonomy" name="taxonomy">
 			<?php echo $taxStr; ?>
 		</select>
 		&nbsp;<input type="button" name="edit" Value="<?php _e('Order taxonomies','mytaxonomyorder'); ?>" onClick="javascript:goEdit();">
-		<?php
-		if($subCatStr != ""){ 
-		?>
-		<h3><?php _e('Order Subcategories','mytaxonomyorder'); ?></h3>
-		<select id="cats" name="cats">
-			<?php echo $subCatStr; ?>
-		</select>
-		&nbsp;<input type="button" name="edit" Value="<?php _e('Order Subcategories','mytaxonomyorder'); ?>" onClick="javascript:goEdit();">
-	<?php }
+		<?php if($subTaxStr != ""){	?>
+			<h3><?php _e('Order subtaxonomies','mytaxonomyorder'); ?></h3>
+			<select id="taxs" name="taxs">
+				<?php echo $subTaxStr; ?>
+			</select>
+			&nbsp;<input type="button" name="edit" Value="<?php _e('Order Subtaxonomies','mytaxonomyorder'); ?>" onClick="javascript:goEdit();">
+		<?php }
+		//Get all terms of parent
 		$results=$wpdb->get_results("SELECT * FROM $wpdb->terms t inner join $wpdb->term_taxonomy tt on t.term_id = tt.term_id WHERE taxonomy = '".$taxonomy."' and parent = $parentID ORDER BY tt.term_order ASC"); ?>
-		<h3><?php _e('Order Categories','mytaxonomyorder'); ?></h3>
-		    <ul id="order" style="width: 90%; margin:10px 10px 10px 0px; padding:10px; border:1px solid #B2B2B2; list-style:none;">
-			<?php foreach($results as $row)
-			{
+		<h3><?php _e('Order taxonomies','mytaxonomyorder'); ?></h3>
+	    <ul id="order" style="width: 90%; margin:10px 10px 10px 0px; padding:10px; border:1px solid #B2B2B2; list-style:none;">
+			<?php 
+			//Display all terms
+			foreach($results as $row)
 				echo "<li id='$row->term_id' class='lineitem'>$row->name</li>";
-			}?>
+			?>
 		</ul>
 	
 		<input type="button" id="orderButton" Value="<?php _e('Click to Order Categories','mytaxonomyorder'); ?>" onclick="javascript:orderCats();">&nbsp;&nbsp;<strong id="updateText"></strong>
@@ -156,7 +248,7 @@ function mytaxonomyorder_init() {
 	
 	<script language="JavaScript">
 		
-		function mycategoryrderaddloadevent(){
+		function mytaxonomyorderaddloadevent(){
 			jQuery("#order").sortable({ 
 				placeholder: "ui-selected", 
 				revert: false,
@@ -164,7 +256,7 @@ function mytaxonomyorder_init() {
 			});
 		};
 	
-		addLoadEvent(mycategoryrderaddloadevent);
+		addLoadEvent(mytaxonomyorderaddloadevent);
 	
 		function orderCats() {
 			jQuery("#orderButton").css("display", "none");
@@ -175,45 +267,22 @@ function mytaxonomyorder_init() {
 			if( jQuery('#taxonomy').val() != "" ){
 				taxo = "&taxonomy=<?php echo $taxonomy; ?>";
 			}
-			location.href = '<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&mode=act_OrderCategories&parentID=<?php echo $parentID; ?>&idString='+idList+taxo;
+			location.href = '<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&mode=act_OrderTaxonomies&parentID=<?php echo $parentID; ?>&idString='+idList+taxo;
 		}
+		
 		function goEdit (){
-			var cats = '';
+			var taxs = '';
 			if( jQuery('#taxonomy').val() != "" ){
-				if( jQuery("#cats").val() != "" && jQuery("#cats").val() != undefined )
-					cats = "&parentID="+jQuery("#cats").val();
-				location.href="<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&taxonomy="+jQuery("#taxonomy").val()+cats;
-			}elseif( jQuery("#cats").val() != "" )
-				location.href="<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&parentID="+jQuery("#cats").val();
+				if( jQuery("#taxs").val() != "" && jQuery("#taxs").val() != undefined )
+					taxs = "&parentID="+jQuery("#taxs").val();
+				location.href="<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&taxonomy="+jQuery("#taxonomy").val()+taxs;
+			}elseif( jQuery("#taxs").val() != "" )
+				location.href="<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&parentID="+jQuery("#taxs").val();
 		}
 	</script>
 	
 	<?php
 	}
-}
-	
-function mytaxonomyorder_applyorderfilter( $orderby, $args ){
-	if( $args['orderby'] == 'order' )
-		return 'tt.term_order';
-	else
-		return $orderby;
-}
-
-add_filter( 'get_terms_orderby', 'mytaxonomyorder_applyorderfilter', 10, 2 );
-
-add_action( 'plugins_loaded', 'mytaxonomyorder_init' );
-
-/* Load Translations */
-add_action( 'init', 'mytaxonomyorder_loadtranslation' );
-
-function mytaxonomyorder_loadtranslation() {
-	//load_plugin_textdomain('mytaxonomyorder', false, PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)) );
-}
-
-add_action( 'widgets_init', 'mytaxonomyorder_widgets_init' );
-
-function mytaxonomyorder_widgets_init() {
-	register_widget('mytaxonomyorder_Widget');
 }
 
 class mytaxonomyorder_Widget extends WP_Widget {

@@ -59,7 +59,7 @@ function mytaxonomyorder_widgets_init() {
  * @author Nicolas Juen
  */
 function mytaxonomyorder_loadtranslation() {
-	//load_plugin_textdomain('mytaxonomyorder', false, PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)) );
+	load_plugin_textdomain( 'mytaxonomyorder', false, 'my-taxonomy-order' . '/languages' );
 }
 
 /**
@@ -89,8 +89,7 @@ function mytaxonomyorder_init() {
 	 * @return void
 	 * @author Nicolas Juen
 	 */
-	function mytaxonomyorder_menu()
-	{   
+	function mytaxonomyorder_menu() {   
 		if ( function_exists( 'add_management_page' ) )
 			add_management_page( __( 'My Taxonomy Order', 'mytaxonomyorder' ), __( 'My Taxonomy Order', 'mytaxonomyorder' ), 'manage_options', 'mytaxonomyorder', 'mytaxonomyorder' );
 	}
@@ -210,7 +209,7 @@ function mytaxonomyorder_init() {
 			$parentsParent = $wpdb->get_row( "SELECT parent FROM $wpdb->term_taxonomy WHERE term_id = $parentID ", ARRAY_N );
 			
 			//Display the link to parent page
-			echo '<a href="'. mytaxonomyorder_getTarget() . '?page=mytaxonomyorder&parentID='.$parentsParent[0].'&taxonomy='.$taxonomy.'">'.__( 'Return to parent category', 'mytaxonomyorder' ).'</a>';
+			echo '<a href="'. mytaxonomyorder_getTarget() . '?page=mytaxonomyorder&parentID='.$parentsParent[0].'&taxonomy='.$taxonomy.'">'.__( 'Return to parent taxonomy', 'mytaxonomyorder' ).'</a>';
 		}
 		?>
 		
@@ -237,7 +236,7 @@ function mytaxonomyorder_init() {
 			?>
 		</ul>
 	
-		<input type="button" id="orderButton" Value="<?php _e( 'Click to Order Categories', 'mytaxonomyorder' ); ?>" onclick="javascript:orderCats();">&nbsp;&nbsp;<strong id="updateText"></strong>
+		<input type="button" id="orderButton" Value="<?php _e( 'Click to Order Taxonomies', 'mytaxonomyorder' ); ?>" onclick="javascript:orderCats();">&nbsp;&nbsp;<strong id="updateText"></strong>
 	
 	</div>
 	
@@ -544,27 +543,27 @@ class mytaxonomyorder_Widget extends WP_Widget {
 				<p>
 			<label for="<?php echo $this->get_field_id('title_li'); ?>"><?php _e( 'Title:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $title_li; ?>" name="<?php echo $this->get_field_name('title_li'); ?>" id="<?php echo $this->get_field_id('title_li'); ?>" class="widefat" />
 			<br />
-			<small><?php _e( 'Default to Categories.', 'mytaxonomyorder' ); ?></small>
+			<small><?php _e( 'Default to Taxonomies.', 'mytaxonomyorder' ); ?></small>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('exclude'); ?>"><?php _e( 'Exclude:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $exclude; ?>" name="<?php echo $this->get_field_name('exclude'); ?>" id="<?php echo $this->get_field_id('exclude'); ?>" class="widefat" />
 			<br />
-			<small><?php _e( 'Category IDs, separated by commas.', 'mytaxonomyorder'  ); ?></small>
+			<small><?php _e( 'Taxonomy IDs, separated by commas.', 'mytaxonomyorder'  ); ?></small>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('exclude_tree'); ?>"><?php _e( 'Exclude Tree:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $exclude_tree; ?>" name="<?php echo $this->get_field_name('exclude_tree'); ?>" id="<?php echo $this->get_field_id('exclude_tree'); ?>" class="widefat" />
 			<br />
-			<small><?php _e( 'Category IDs, separated by commas.', 'mytaxonomyorder'  ); ?></small>
+			<small><?php _e( 'Taxonomy IDs, separated by commas.', 'mytaxonomyorder'  ); ?></small>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('include'); ?>"><?php _e( 'Include:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $include; ?>" name="<?php echo $this->get_field_name('include'); ?>" id="<?php echo $this->get_field_id('include'); ?>" class="widefat" />
 			<br />
-			<small><?php _e( 'Category IDs, separated by commas.', 'mytaxonomyorder'  ); ?></small>
+			<small><?php _e( 'Taxonomy IDs, separated by commas.', 'mytaxonomyorder'  ); ?></small>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('child_of'); ?>"><?php _e( 'Child Of:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $child_of; ?>" name="<?php echo $this->get_field_name('child_of'); ?>" id="<?php echo $this->get_field_id('child_of'); ?>" class="widefat" />
 			<br />
-			<small><?php _e( 'Only display children of this Category ID.', 'mytaxonomyorder'  ); ?></small>
+			<small><?php _e( 'Only display children of this Taxonomy ID.', 'mytaxonomyorder'  ); ?></small>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('feed'); ?>"><?php _e( 'Feed Text:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $feed; ?>" name="<?php echo $this->get_field_name('feed'); ?>" id="<?php echo $this->get_field_id('feed'); ?>" class="widefat" />
@@ -579,7 +578,7 @@ class mytaxonomyorder_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id('number'); ?>"><?php _e( 'Number to Display:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $number; ?>" name="<?php echo $this->get_field_name('number'); ?>" id="<?php echo $this->get_field_id('number'); ?>" class="widefat" />
 			<br />
-			<small><?php _e( 'Max number of categories to display', 'mytaxonomyorder'  ); ?></small>
+			<small><?php _e( 'Max number of taxonomies to display', 'mytaxonomyorder'  ); ?></small>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id('depth'); ?>"><?php _e( 'Depth:', 'mytaxonomyorder' ); ?></label> <input type="text" value="<?php echo $depth; ?>" name="<?php echo $this->get_field_name('depth'); ?>" id="<?php echo $this->get_field_id('depth'); ?>" class="widefat" />

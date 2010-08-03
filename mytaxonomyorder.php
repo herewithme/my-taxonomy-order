@@ -3,7 +3,7 @@
 Plugin Name: My Taxonomy Order
 Plugin URI: http://www.beapi.fr
 Description: My Taxonomy Order allows you to set the order in which taxonomy will appear. Uses a drag and drop interface for ordering. Adds a widget with additional options for easy installation on widgetized themes.
-Version: 1.0
+Version: 1.0.0
 Author: Beapi
 Author URI: http://www.beapi.fr
 

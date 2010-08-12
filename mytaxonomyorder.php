@@ -184,7 +184,7 @@ function mytaxonomyorder_init() {
 			$result = count( $taxIDs );
 			
 			for( $i = 0; $i < $result; $i++ )
-				$wpdb->query("UPDATE $wpdb->term_taxonomy SET term_order = '$i' WHERE term_id ='$catIDs[$i]'");
+				var_dump( $wpdb->query("UPDATE $wpdb->term_taxonomy SET term_order = '$i' WHERE term_id ='$taxIDs[$i]'") );
 				
 			$success = '<div id="message" class="updated fade"><p>'. __( 'Taxonomy updated successfully.', 'mytaxonomyorder' ).'</p></div>';
 		}

@@ -3,7 +3,7 @@
 Plugin Name: My Taxonomy Order
 Plugin URI: http://www.beapi.fr
 Description: My Taxonomy Order allows you to set the order in which taxonomy will appear. Uses a drag and drop interface for ordering. Adds a widget with additional options for easy installation on widgetized themes.
-Version: 1.0.0
+Version: 1.0.2
 Author: Beapi
 Author URI: http://www.beapi.fr
 
@@ -217,13 +217,13 @@ function mytaxonomyorder_init() {
 		<select id="taxonomy" name="taxonomy">
 			<?php echo $taxStr; ?>
 		</select>
-		&nbsp;<input type="button" name="edit" Value="<?php _e( 'Order taxonomies', 'mytaxonomyorder' ); ?>" onClick="javascript:goEdit();">
+		&nbsp;<input type="button" name="edit" Value="<?php _e( 'Order taxonomies', 'mytaxonomyorder' ); ?>" onClick="javascript:goEdit( false );">
 		<?php if( $subTaxStr != "" ){	?>
 			<h3><?php _e( 'Order subtaxonomies', 'mytaxonomyorder' ); ?></h3>
 			<select id="taxs" name="taxs">
 				<?php echo $subTaxStr; ?>
 			</select>
-			&nbsp;<input type="button" name="edit" Value="<?php _e( 'Order Subtaxonomies', 'mytaxonomyorder' ); ?>" onClick="javascript:goEdit();">
+			&nbsp;<input type="button" name="edit" Value="<?php _e( 'Order Subtaxonomies', 'mytaxonomyorder' ); ?>" onClick="javascript:goEdit( true );">
 		<?php }
 		//Get all terms of parent
 		$results=$wpdb->get_results( "SELECT * FROM ".$wpdb->terms." t inner join ".$wpdb->term_taxonomy." tt on t.term_id = tt.term_id WHERE taxonomy = '".$taxonomy."' and parent = ".$parentID." ORDER BY tt.term_order ASC" ); ?>
@@ -274,10 +274,10 @@ function mytaxonomyorder_init() {
 			location.href = '<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&mode=act_OrderTaxonomies&parentID=<?php echo $parentID; ?>&idString='+idList+taxo;
 		}
 		
-		function goEdit (){
+		function goEdit ( sub ){
 			var taxs = '';
 			if( jQuery( '#taxonomy' ).val() != "" ){
-				if( jQuery( "#taxs" ).val() != "" && jQuery( "#taxs" ).val() != undefined )
+				if( jQuery( "#taxs" ).val() != "" && jQuery( "#taxs" ).val() != undefined && sub == true )
 					taxs = "&parentID="+jQuery( "#taxs" ).val();
 				location.href="<?php echo mytaxonomyorder_getTarget(); ?>?page=mytaxonomyorder&taxonomy="+jQuery( "#taxonomy" ).val()+taxs;
 			}elseif( jQuery( "#taxs" ).val() != "" )

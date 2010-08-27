@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My taxonomy order\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-03 10:54+0100\n"
-"PO-Revision-Date: 2010-08-03 10:56+0100\n"
+"POT-Creation-Date: 2010-08-27 14:44+0100\n"
+"PO-Revision-Date: 2010-08-27 14:45+0100\n"
 "Last-Translator: Nicolas <njuen@beapi.fr>\n"
 "Language-Team: Beapi\n"
 "MIME-Version: 1.0\n"
@@ -31,8 +31,8 @@ msgid "Taxonomy updated successfully."
 msgstr "Les taxonomies ont été correctement mises à jour"
 
 #: mytaxonomyorder.php:203
-msgid "Choose a taxonomy from the drop down to order subtaxonomies in that taxonomy or order the taxonomies on this level by dragging and dropping them into the desired order."
-msgstr "Choisissez une taxonomie à trier depuis la liste déroulante et puis choisissez les sous-taxonomies à ordonner depuis la liste déroulante. Vous pouvez ordonner les termes par glisser déposer."
+msgid "Choose a taxonomy from the drop down to order terms in that taxonomy or order the terms on this level by dragging and dropping them into the desired order."
+msgstr "Choisissez une taxinomie à trier depuis la liste déroulante et puis choisissez les termes à ordonner depuis la liste déroulante. Vous pouvez ordonner les termes par glisser déposer."
 
 #: mytaxonomyorder.php:212
 msgid "Return to parent taxonomy"
@@ -43,25 +43,28 @@ msgid "Select taxonomy"
 msgstr "Selectionner une taxonomie"
 
 #: mytaxonomyorder.php:220
-#: mytaxonomyorder.php:230
-msgid "Order taxonomies"
-msgstr "Trier les taxonomies"
+msgid "Order terms"
+msgstr "Trier les termes"
 
 #: mytaxonomyorder.php:222
 msgid "Order subtaxonomies"
 msgstr "Trier les sous-taxonomies"
 
 #: mytaxonomyorder.php:226
-msgid "Order Subtaxonomies"
-msgstr "Trier les Sous-taxonomies"
+msgid "Order subterms"
+msgstr "Trier les sous-termes"
+
+#: mytaxonomyorder.php:230
+msgid "Order taxonomies"
+msgstr "Trier les taxonomies"
 
 #: mytaxonomyorder.php:239
-msgid "Click to Order Taxonomies"
-msgstr "Cliquer pour trier les taxonomies"
+msgid "Click to Order Terms"
+msgstr "Cliquer pour trier les termes"
 
 #: mytaxonomyorder.php:267
-msgid "Updating taxonomy Order..."
-msgstr "Mise à jour de l'ordre des taxonomies"
+msgid "Updating terms Order..."
+msgstr "Mise à jour de l'ordre des termes"
 
 #: mytaxonomyorder.php:298
 msgid "Enhanced Taxonomy widget provided by My Taxonomy Order"
@@ -209,3 +212,5 @@ msgstr "Utiliser la description pour le titre"
 msgid "Show Hierarchical"
 msgstr "Afficher hiérarchiquement"
 
+#~ msgid "Order Subtaxonomies"
+#~ msgstr "Trier les Sous-taxonomies"

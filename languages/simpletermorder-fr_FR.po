@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My taxonomy order\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-27 14:44+0100\n"
-"PO-Revision-Date: 2010-08-27 14:45+0100\n"
+"POT-Creation-Date: 2010-08-27 15:35+0100\n"
+"PO-Revision-Date: 2010-08-27 15:38+0100\n"
 "Last-Translator: Nicolas <njuen@beapi.fr>\n"
 "Language-Team: Beapi\n"
 "MIME-Version: 1.0\n"
@@ -16,201 +16,220 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: mytaxonomyorder.php:94
-#: mytaxonomyorder.php:201
-#: mytaxonomyorder.php:300
-msgid "My Taxonomy Order"
-msgstr "Mon ordre de taxonomies"
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:113
+msgid "Simple Term Order"
+msgstr "Ordre des termes"
 
-#: mytaxonomyorder.php:133
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:113
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:213
+msgid "Terms Order"
+msgstr "Ordre des termes"
+
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:152
 msgid "Order Taxonomy"
 msgstr "Tri des Taxonomies"
 
-#: mytaxonomyorder.php:189
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:201
 msgid "Taxonomy updated successfully."
 msgstr "Les taxonomies ont été correctement mises à jour"
 
-#: mytaxonomyorder.php:203
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:215
 msgid "Choose a taxonomy from the drop down to order terms in that taxonomy or order the terms on this level by dragging and dropping them into the desired order."
 msgstr "Choisissez une taxinomie à trier depuis la liste déroulante et puis choisissez les termes à ordonner depuis la liste déroulante. Vous pouvez ordonner les termes par glisser déposer."
 
-#: mytaxonomyorder.php:212
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:224
 msgid "Return to parent taxonomy"
 msgstr "Retour à la taxonomie parente"
 
-#: mytaxonomyorder.php:216
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:228
 msgid "Select taxonomy"
 msgstr "Selectionner une taxonomie"
 
-#: mytaxonomyorder.php:220
-msgid "Order terms"
-msgstr "Trier les termes"
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:232
+msgid "Order this taxonomy"
+msgstr "Trier cette taxonomie"
 
-#: mytaxonomyorder.php:222
-msgid "Order subtaxonomies"
-msgstr "Trier les sous-taxonomies"
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:234
+msgid "Order sub-terms"
+msgstr "Trier les sous-termes"
 
-#: mytaxonomyorder.php:226
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:238
 msgid "Order subterms"
 msgstr "Trier les sous-termes"
 
-#: mytaxonomyorder.php:230
-msgid "Order taxonomies"
-msgstr "Trier les taxonomies"
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:242
+msgid "Order terms"
+msgstr "Trier les termes"
 
-#: mytaxonomyorder.php:239
-msgid "Click to Order Terms"
-msgstr "Cliquer pour trier les termes"
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:251
+msgid "Save terms order"
+msgstr "Enregistrer l'ordre des termes"
 
-#: mytaxonomyorder.php:267
-msgid "Updating terms Order..."
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:279
+msgid "Updating terms order..."
 msgstr "Mise à jour de l'ordre des termes"
 
-#: mytaxonomyorder.php:298
-msgid "Enhanced Taxonomy widget provided by My Taxonomy Order"
-msgstr "Widget d'ordre des taxonomies généré par Mon ordre de taxonomies"
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:310
+msgid "Enhanced Taxonomy widget provided by My Terms Order"
+msgstr "Widget d'ordre des termes généré par Mon ordre de termes"
 
-#: mytaxonomyorder.php:316
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:312
+msgid "My Terms Order"
+msgstr "Mon ordre"
+
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:328
 msgid "Taxonomies"
 msgstr "Taxonomies"
 
-#: mytaxonomyorder.php:366
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:378
 msgid "Select Term"
 msgstr "Sélectionner le terme :"
 
-#: mytaxonomyorder.php:514
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:526
 msgid "Taxonomy:"
 msgstr "Taxonomy"
 
-#: mytaxonomyorder.php:526
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:538
 msgid "Order By:"
 msgstr "Trier par :"
 
-#: mytaxonomyorder.php:528
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:540
 msgid "My Order"
 msgstr "Mon ordre"
 
-#: mytaxonomyorder.php:529
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:541
 msgid "Name"
 msgstr "Nom"
 
-#: mytaxonomyorder.php:530
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:542
 msgid "Count"
 msgstr "Nombre d'articles associés"
 
-#: mytaxonomyorder.php:531
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:543
 msgid "ID"
 msgstr "ID"
 
-#: mytaxonomyorder.php:532
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:544
 msgid "Slug"
 msgstr "Slug"
 
-#: mytaxonomyorder.php:533
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:545
 msgid "Term Group"
 msgstr "Par groupe de termes"
 
-#: mytaxonomyorder.php:537
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:549
 msgid "Order:"
 msgstr "Ordre :"
 
-#: mytaxonomyorder.php:539
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:551
 msgid "Ascending"
 msgstr "Croissant"
 
-#: mytaxonomyorder.php:540
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:552
 msgid "Descending"
 msgstr "Décroissant"
 
-#: mytaxonomyorder.php:544
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:556
 msgid "Title:"
 msgstr "Titre :"
 
-#: mytaxonomyorder.php:546
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:558
 msgid "Default to Taxonomies."
 msgstr "Par défaut Taxonomies"
 
-#: mytaxonomyorder.php:549
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:561
 msgid "Exclude:"
 msgstr "Exclure"
 
-#: mytaxonomyorder.php:551
-#: mytaxonomyorder.php:556
-#: mytaxonomyorder.php:561
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:563
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:568
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:573
 msgid "Taxonomy IDs, separated by commas."
 msgstr "ID des taxonomies, séparées par des virgules"
 
-#: mytaxonomyorder.php:554
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:566
 msgid "Exclude Tree:"
 msgstr "Arbre d'exclusion"
 
-#: mytaxonomyorder.php:559
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:571
 msgid "Include:"
 msgstr "Inclure :"
 
-#: mytaxonomyorder.php:564
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:576
 msgid "Child Of:"
 msgstr "Enfant de :"
 
-#: mytaxonomyorder.php:566
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:578
 msgid "Only display children of this Taxonomy ID."
 msgstr "Afficher seulement les enfants de l'id de cette taxonomy"
 
-#: mytaxonomyorder.php:569
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:581
 msgid "Feed Text:"
 msgstr "Texte du flux"
 
-#: mytaxonomyorder.php:571
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:583
 msgid "Text for RSS Feed"
 msgstr "Texte pour le flux"
 
-#: mytaxonomyorder.php:574
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:586
 msgid "Feed Image:"
 msgstr "Image du flux"
 
-#: mytaxonomyorder.php:576
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:588
 msgid "URL to RSS Image, copy url of this image"
 msgstr "URL de l'icone RSS, copier l'url de cette image"
 
-#: mytaxonomyorder.php:579
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:591
 msgid "Number to Display:"
 msgstr "Nombre à afficher"
 
-#: mytaxonomyorder.php:581
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:593
 msgid "Max number of taxonomies to display"
 msgstr "Nombre maximum de taxonomies à afficher"
 
-#: mytaxonomyorder.php:584
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:596
 msgid "Depth:"
 msgstr "Profondeur :"
 
-#: mytaxonomyorder.php:586
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:598
 msgid "0 = All, -1 = Flat, 1 = Top Level Only, n = display n levels"
 msgstr " 0 = Tous, -1 = sans hiérarchie, 1 = Seulement le premier niveau, n = afficher n niveaux"
 
-#: mytaxonomyorder.php:590
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:602
 msgid "Show As Dropdown"
 msgstr "Afficher en liste déroulante"
 
-#: mytaxonomyorder.php:592
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:604
 msgid "Show Last Updated"
 msgstr "Afficher par dernier mis à jour"
 
-#: mytaxonomyorder.php:594
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:606
 msgid "Show Count"
 msgstr "Afficher le nombre d'articles associés"
 
-#: mytaxonomyorder.php:596
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:608
 msgid "Hide Empty"
 msgstr "Cacher les taxonomies vides"
 
-#: mytaxonomyorder.php:598
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:610
 msgid "Use Desc as Title"
 msgstr "Utiliser la description pour le titre"
 
-#: mytaxonomyorder.php:600
+#: /Users/beapi/Desktop/simple-term-order/simple-term-order.php:612
 msgid "Show Hierarchical"
 msgstr "Afficher hiérarchiquement"
+
+#~ msgid "My Taxonomy Order"
+#~ msgstr "Mon ordre de taxonomies"
+
+#~ msgid "Order subtaxonomies"
+#~ msgstr "Trier les sous-taxonomies"
+
+#~ msgid "Order taxonomies"
+#~ msgstr "Trier les taxonomies"
+
+#~ msgid "Click to Order Terms"
+#~ msgstr "Cliquer pour trier les termes"
 
 #~ msgid "Order Subtaxonomies"
 #~ msgstr "Trier les Sous-taxonomies"

@@ -3,7 +3,7 @@ Donate link: http://beapi.fr/donate/
 Tags: taxonomies, taxonomy, terms, term, order, sidebar, widget
 Requires at least: 3.0
 Tested up to: 3.0.1
-Stable tag: 1.2
+Stable tag: 1.3
 
 Simple Term Order allows you to set the order in which taxonomies will appear in the sidebar.
 Original work from My category Order! by Andrew Charlton | http://www.geekyweekly.com
@@ -29,7 +29,11 @@ This plugin make the same as [My Category order] but support all taxonomies.
 * Prepare the queries in database
 * Create the column for the plugin only at activation
 * Rename plugin to term order
-* 
+
+= 1.3 =
+* Rebuild the entire plugin
+* Use javascript for ordering
+* Use ajax for saving the order
 
 
 == Installation ==

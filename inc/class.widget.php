@@ -63,7 +63,7 @@ class Taxonomy_Order_Walker extends Walker {
 		$cat_name = apply_filters( 'list_cats', $cat_name, $category );
 
 		if ( 'list' == $args['style'] ) {
-			$output .= "\t".'<li id="item_'.$category->term_id.'"><span>'.$cat_name.'</span>';
+			$output .= "\t".'<li class="menu-item-handle menu-item-bar" id="item_'.$category->term_id.'"><span class="menu-item-handle item-title">'.$cat_name.'</span>';
 		} else {
 			$output .= "\t$cat_name<br />\n";
 		}

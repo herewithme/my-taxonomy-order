@@ -5,7 +5,7 @@ Plugin URI: http://www.beapi.fr
 Description: A admin for order terms in taxonomies
 Author: Be API
 Author URI: http://beapi.fr
-Version: 1.3
+Version: 1.3.1
 */
 //Register the plugin path
 define( 'STO_URL', plugins_url('/', __FILE__) );
@@ -99,6 +99,8 @@ class SimpleTermsOrder {
 		if ( isset( $_GET['page'] ) && $_GET['page'] == "simpletermorder" ){	
 			// jQuery UI Sortable
 			wp_enqueue_script( 'cust-jquery-ui-sortable', plugins_url('/js/ui.nestedSortable.js', __FILE__), array('jquery', 'jquery-ui-core'), '1.7.2', false );
+			
+			wp_enqueue_style( 'nav-menu');
 		}
 	}
 	
@@ -174,7 +176,7 @@ class SimpleTermsOrder {
 			</noscript>
 			
 			<div id="order-taxonomy-terms">
-				<ul id="sortable">
+				<ul id="sortable" class="menu">
 					<?php $this->listTerms('hide_empty=0&title_li=&orderby=order&taxonomy='.$taxonomy); ?>
 				</ul>
 				
@@ -186,11 +188,8 @@ class SimpleTermsOrder {
 			</p>
 			
 			<style type="text/css">
-				#sortable { list-style-type: none; margin: 10px 0 0; padding: 0; width: 100%; }
-				#sortable ul { margin-left:20px; list-style: none;margin-top:1px;margin-bottom: 10px }
-				#sortable li { margin: 2px; padding:0;}
-				#sortable li span { display: block; border: 1px solid #aaa; background: #eee;  padding: 5px; }
-				.placeholder{border: dashed 1px #fff;background-color:#21759B;height:40px;}
+				#sortable ul { margin-bottom: 10px }
+				#sortable li.menu-item-bar { border: 1px solid #aaa; width:90%}
 			</style>
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
@@ -198,7 +197,7 @@ class SimpleTermsOrder {
 						'tolerance':'intersect',
 						'cursor':'pointer',
 						'items':' li',
-						'placeholder':'placeholder',
+						'placeholder':'sortable-placeholder',
 						'nested': 'ul',
 						'revert' : true
 					});
@@ -285,7 +284,7 @@ class SimpleTermsOrder {
 
 		if( !empty( $show_option_all ) )
 			if ( 'list' == $style )
-				$output .= '<li><a href="' .  get_bloginfo( 'url' )  . '">' . $show_option_all . '</a></li>';
+				$output .= '<li class="menu-item-handle"><a href="' .  get_bloginfo( 'url' )  . '">' . $show_option_all . '</a></li>';
 			else
 				$output .= '<a href="' .  get_bloginfo( 'url' )  . '">' . $show_option_all . '</a>';
 

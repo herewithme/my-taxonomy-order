@@ -35,6 +35,10 @@ This plugin make the same as [My Category order] but support all taxonomies.
 * Use javascript for ordering
 * Use ajax for saving the order
 
+= 1.3.1 =
+* Add wordpress menu css
+* Use wordpress menu classes for displaying
+
 
 == Installation ==
 

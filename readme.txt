@@ -42,6 +42,9 @@ This plugin make the same as [My Category order] but support all taxonomies.
 = 1.3.2 =
 * Display only hierarchical taxonomies in dropdown menu
 
+= 1.3.3 =
+* Add ccss rule for overflow
+
 
 == Installation ==
 

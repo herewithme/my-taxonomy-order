@@ -5,7 +5,7 @@ Plugin URI: http://www.beapi.fr
 Description: A admin for order terms in taxonomies
 Author: Be API
 Author URI: http://beapi.fr
-Version: 1.3.2
+Version: 1.3.3
 */
 //Register the plugin path
 define( 'STO_URL', plugins_url('/', __FILE__) );
@@ -190,6 +190,7 @@ class SimpleTermsOrder {
 			<style type="text/css">
 				#sortable ul { margin-bottom: 10px }
 				#sortable li.menu-item-bar { border: 1px solid #aaa; width:90%}
+				.menu-item-handle{ overflow: visible; }
 			</style>
 			<script type="text/javascript">
 				jQuery(document).ready(function() {

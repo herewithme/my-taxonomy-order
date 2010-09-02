@@ -39,6 +39,9 @@ This plugin make the same as [My Category order] but support all taxonomies.
 * Add wordpress menu css
 * Use wordpress menu classes for displaying
 
+= 1.3.2 =
+* Display only hierarchical taxonomies in dropdown menu
+
 
 == Installation ==
 

@@ -5,7 +5,7 @@ Plugin URI: http://www.beapi.fr
 Description: A admin for order terms in taxonomies
 Author: Be API
 Author URI: http://beapi.fr
-Version: 1.3.1
+Version: 1.3.2
 */
 //Register the plugin path
 define( 'STO_URL', plugins_url('/', __FILE__) );
@@ -149,7 +149,7 @@ class SimpleTermsOrder {
 		<div class="wrap" id="postcustomstuff">
 			<?php
 				//Get all taxonomies
-				$taxonomies = get_taxonomies( '', 'objects' );
+				$taxonomies = get_taxonomies( array('hierarchical' => true), 'objects' );
 				
 				//Get the taxonmy filtered, if not get first key of taxonmies getted
 				$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : key( $taxonomies );

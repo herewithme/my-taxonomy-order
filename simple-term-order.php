@@ -5,14 +5,15 @@ Plugin URI: http://www.beapi.fr
 Description: A admin for order terms in taxonomies
 Author: Be API
 Author URI: http://beapi.fr
-Version: 1.3.3
+Version: 1.3.4
 */
 //Register the plugin path
 define( 'STO_URL', plugins_url('/', __FILE__) );
 define( 'STO_DIR', dirname(__FILE__) );
 
 //Include the widget part
-include_once(STO_DIR.'/inc/class.widget.php');
+require_once(STO_DIR.'/inc/class.walker.php');
+require_once(STO_DIR.'/inc/class.widget.php');
 
 //At the activation of the plugin add the column
 register_activation_hook  ( __FILE__, array( 'SimpleTermsOrder', 'activate' ) );
@@ -118,11 +119,11 @@ class SimpleTermsOrder {
 		foreach( (array) $output as $key => $values ) {
 			if ( $key == 'item' ) {
 				foreach( $values as $position => $id ) {					
-					$wpdb->update( $wpdb->term_taxonomy, array( 'term_order' => $position, 'parent' => 0 ), array( 'term_id' => $id ), array( '%d' , '%d' ), array( '%d' ) );
+					var_dump( $wpdb->update( $wpdb->term_taxonomy, array( 'term_order' => $position, 'parent' => 0 ), array( 'term_taxonomy_id' => $id ), array( '%d' , '%d' ), array( '%d' ) ) );
 				} 
 			} else {
 				foreach( $values as $position => $id ) {
-					$wpdb->update( $wpdb->term_taxonomy, array( 'term_order' => $position, 'parent' => str_replace( 'item_', '', $key ) ), array( 'term_id' => $id ), array( '%d' , '%d' ), array( '%d' ) );
+					$wpdb->update( $wpdb->term_taxonomy, array( 'term_order' => $position, 'parent' => str_replace( 'item_', '', $key ) ), array( 'term_taxonomy_id' => $id ), array( '%d' , '%d' ), array( '%d' ) );
 				}
 			}
 		}
@@ -149,7 +150,7 @@ class SimpleTermsOrder {
 		<div class="wrap" id="postcustomstuff">
 			<?php
 				//Get all taxonomies
-				$taxonomies = get_taxonomies( array('hierarchical' => true), 'objects' );
+				$taxonomies = get_taxonomies( array(), 'objects' );
 				
 				//Get the taxonmy filtered, if not get first key of taxonmies getted
 				$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : key( $taxonomies );

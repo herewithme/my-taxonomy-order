@@ -45,6 +45,9 @@ This plugin make the same as [My Category order] but support all taxonomies.
 = 1.3.3 =
 * Add ccss rule for overflow
 
+= 1.3.4 =
+* Use term_taxonomy_id instead of term_id 
+
 
 == Installation ==
 

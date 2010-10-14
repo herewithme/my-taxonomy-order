@@ -42,7 +42,8 @@ class SimpleTermsOrder_Admin {
 				}
 			} else {
 				foreach( $values as $position => $id ) {
-					$wpdb->update( $wpdb->term_taxonomy, array( 'term_order' => $position, 'parent' => str_replace( 'item_', '', $key ) ), array( 'term_taxonomy_id' => $id ), array( '%d' , '%d' ), array( '%d' ) );
+					$parent_term_id = $wpdb->get_var( $wpdb->prepare("SELECT term_id FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d", str_replace( 'item_', '', $key )) );
+					$wpdb->update( $wpdb->term_taxonomy, array( 'term_order' => $position, 'parent' => $parent_term_id ), array( 'term_taxonomy_id' => $id ), array( '%d' , '%d' ), array( '%d' ) );
 				}
 			}
 		}

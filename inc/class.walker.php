@@ -13,7 +13,7 @@ class Taxonomy_Order_Walker extends Walker {
 	 * @todo Decouple this
 	 * @var array
 	 */
-	var $db_fields = array ('parent' => 'parent', 'id' => 'term_taxonomy_id');
+	var $db_fields = array ('parent' => 'parent', 'id' => 'term_id');
 
 	/**
 	 * @see Walker::start_lvl()

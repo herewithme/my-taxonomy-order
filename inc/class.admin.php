@@ -18,9 +18,9 @@ class SimpleTermsOrder_Admin {
 	function registerJavaScript() {
 		if ( isset($_GET['page']) && $_GET['page'] == "simple-term-order" ) {
 			// jQuery UI Sortable
-			wp_enqueue_script( 'cust-jquery-ui-sortable', STO_URL . 'js/ui.nestedSortable.js', array('jquery', 'jquery-ui-core'), '1.7.2', false );
+			wp_enqueue_script( 'cust-jquery-ui-sortable', STO_URL . 'js/jquery.ui.nestedSortable.js', array('jquery', 'jquery-ui-core'), '1.7.2', false );
 			
-			wp_deregister_script( 'jquery-ui-sortable' );
+			//wp_deregister_script( 'jquery-ui-sortable' );
 			wp_enqueue_style( 'nav-menu');
 		}
 	}
@@ -34,7 +34,7 @@ class SimpleTermsOrder_Admin {
 	function saveAjaxOrder() {
 		global $wpdb;
 		
-		parse_str($_POST['order'], $output);
+		parse_str( $_POST['order'], $output );
 		foreach( (array) $output as $key => $values ) {
 			if ( $key == 'item' ) {
 				foreach( $values as $position => $id ) {
@@ -117,19 +117,27 @@ class SimpleTermsOrder_Admin {
 			</style>
 			<script type="text/javascript">
 				jQuery(document).ready(function() {
-					jQuery("#sortable").sortable({
+					jQuery("#sortable").nestedSortable({
 						'tolerance':'intersect',
 						'cursor':'pointer',
 						'items':' li',
 						'placeholder':'sortable-placeholder',
 						'nested': 'ul',
-						'revert' : true
+						'revert' : true,
+						'listType' : 'ul'
 					});
 					
 					jQuery("#sortable").disableSelection();
 					jQuery("#save-order").bind( "click", function() {
+					
+						window.scrollTo(0, 0);
+						jQuery('#order-taxonomy-terms').fadeTo('fast', 0.3 );
+						jQuery("#ajax-response").html('<div class="message updated fade"><p><?php echo esc_js(__("Sorting, please wait...", "simpletermorder")); ?></p></div>');
+						
 						jQuery.post( ajaxurl, { action:'update-simple-terms-order', order:jQuery("#sortable").sortable("serialize") }, function() {
 							jQuery("#ajax-response").html('<div class="message updated fade"><p><?php echo esc_js(__("Items sorted with success !", "simpletermorder")); ?></p></div>');
+							
+							jQuery('#order-taxonomy-terms').fadeTo('fast', 1 );
 							jQuery("#ajax-response div").delay(2000).hide("slow");
 						});
 						return false;
